@@ -569,6 +569,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7048252962169437441, guid: e9c16fb05f2b3604a96cb483ca3ea5fa, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 1981649418}
+    - target: {fileID: 7048252962169437441, guid: e9c16fb05f2b3604a96cb483ca3ea5fa, type: 3}
       propertyPath: raycastManager
       value: 
       objectReference: {fileID: 1829404176}
@@ -613,3 +617,8 @@ CapsuleCollider:
   m_Height: 1.8000002
   m_Direction: 1
   m_Center: {x: 2.6224634e-11, y: 0.8000001, z: -0.055444244}
+--- !u!95 &1981649418 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7616082168410000563, guid: e9c16fb05f2b3604a96cb483ca3ea5fa, type: 3}
+  m_PrefabInstance: {fileID: 1981649412}
+  m_PrefabAsset: {fileID: 0}
