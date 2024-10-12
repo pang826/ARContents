@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.XR.ARSubsystems;
 using Debug = UnityEngine.Debug;
 
@@ -22,9 +23,8 @@ namespace Assets
         }
         public void OnInput()
         {
-            if (Input.touchCount > 0 && fox.raycastManager.Raycast(Input.GetTouch(0).position, fox.hits, TrackableType.Planes))
+            if (Input.touchCount > 0 && fox.raycastManager.Raycast(Input.GetTouch(0).position, fox.hits, TrackableType.Planes) && !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
             {
-                Debug.Log("터치");
                 fox.SetState(new FoxWalk(fox));
             }
             if (!fox.isTrace)

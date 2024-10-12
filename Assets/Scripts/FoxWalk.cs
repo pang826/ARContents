@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Assets
 {
@@ -43,7 +44,7 @@ namespace Assets
                 fox.SetState(new FoxIdle(fox));
             }
 
-            if (fox.hits[0].pose.position - fox.transform.position != Vector3.zero)
+            if (fox.hits[0].pose.position - fox.transform.position != Vector3.zero && !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
             {
                 fox.transform.rotation = Quaternion.LookRotation((fox.hits[0].pose.position - fox.transform.position).normalized);
             }
