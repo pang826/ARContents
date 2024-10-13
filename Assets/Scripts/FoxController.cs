@@ -57,6 +57,8 @@ public class FoxController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        rigid.velocity = Vector3.zero;
+        rigid.angularVelocity = Vector3.zero;
         // 공이 움직이고 있는 상태면 넘어감
         if (ballSelect)
         {

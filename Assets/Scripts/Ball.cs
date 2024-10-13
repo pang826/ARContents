@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR.ARFoundation;
 
 public class Ball : MonoBehaviour
 {
@@ -21,7 +19,7 @@ public class Ball : MonoBehaviour
     }
     private void Update()
     {
-        if(transform.position.y < - 20)
+        if (transform.position.y < -20)
         {
             Destroy(gameObject);
         }
@@ -55,7 +53,7 @@ public class Ball : MonoBehaviour
                 // 화면과 평행한 Plane 생성
                 Plane groundPlane = new Plane(Vector3.forward, transform.position);
                 // plane.Raycast는 ray의 origin과 plane이 닿았을 경우 true 값을 반환하고 out을 통하여 거리를 부여함
-                if(groundPlane.Raycast(ray, out float cameraToPlaneDist))
+                if (groundPlane.Raycast(ray, out float cameraToPlaneDist))
                 {
                     // ray.GetPoint(float) 는 ray로 부터 float만큼 떨어진 지점을 반환
                     // 공의 위치를 이동
@@ -68,16 +66,32 @@ public class Ball : MonoBehaviour
                 }
             }
             // 화면에서 터치를 그만두었을 때
-            else if(touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled && isSelected)
+            else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled && isSelected)
             {
+                // 선택 끝
                 isSelected = false;
-                
+
+                // rigidBody 중력 사용
                 rigid.useGravity = true;
+
                 // normalized를 통해 속도의 방향을 알아내고 z값을 줌으로써 앞으로 향함
-                // 속도가 가해지는 x방향속도과 y방향속도, z 방향값을 정규화하여 방향을 반환함
-                Vector3 dir = new Vector3(velocity.x, velocity.y, 1f).normalized;
-                // (공의 앞부분 + 속도의 방향) * 속도방향의 y방향(얼마나 위로 드래그 했냐에 따라 강도를 달리 하고 싶었음)
-                rigid.AddForce((transform.forward + dir) * dir.y, ForceMode.Impulse);
+                // 속도가 가해지는 카메라 x방향속도과 카메라 y방향속도를 정규화하여 방향을 반환함
+                Vector3 dir = (Camera.main.transform.right * velocity.x + Camera.main.transform.forward * velocity.y).normalized;
+
+                // y 입력값만큼 z방향으로 값 증감
+                Vector3 power = new Vector3(0, 0, velocity.y).normalized;
+
+                // z 값을 정규화하면 0과 차이가 없을정도로 차이가 나기에 따로 추가
+                // z 값을 1로 고정하면 살짝만 해도 너무 멀리갈 경우가 생겨서 어색함
+                // Mathf.Clamp를 통하여 최솟값과 최대값을 정해주어서 자연스럽게 변경
+                dir.z = Mathf.Clamp(1, 0.1f, 1.5f);
+
+                // 공의 회전값을 카메라가 보고있는 방향으로 설정
+                rigid.rotation = Quaternion.LookRotation(Camera.main.transform.forward);
+
+                // 공 던지기
+                rigid.AddForce(dir + power, ForceMode.Impulse);
+
                 // fox 움직임 다시 시작
                 if (foxController != null)
                 {
