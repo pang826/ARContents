@@ -31,11 +31,13 @@ namespace Assets
 
         public void OnMove()
         {
+            fox.rigid.velocity = Vector3.zero;
+            fox.rigid.angularVelocity = Vector3.zero;
             // 이동하고자 하는 방향을 구하기
             Vector3 destination = Vector3.MoveTowards(fox.transform.position, fox.hits[0].pose.position, fox.speed * Time.fixedDeltaTime);
             // rigidbody를 이용한 움직임
             // 터치한 거리와 가까워지면 이동 종료
-            if (Vector3.Distance(fox.hits[0].pose.position, fox.transform.position) >= 0.2f)
+            if (Vector3.Distance(fox.hits[0].pose.position, fox.transform.position) >= 0.1f)
             {
                 fox.rigid.MovePosition(destination);
             }

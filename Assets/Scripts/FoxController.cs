@@ -8,7 +8,6 @@ using UnityEngine.XR.ARSubsystems;
 public class FoxController : MonoBehaviour
 {
     private IFoxState curState;
-
     public ARRaycastManager raycastManager;
     public List<ARRaycastHit> hits = new List<ARRaycastHit>();
     public Rigidbody rigid;
@@ -46,7 +45,7 @@ public class FoxController : MonoBehaviour
 
     private void Update()
     {
-        
+        Debug.Log(curState.ToString());
         // 공이 움직이고 있는 상태면 넘어감
         if (ballSelect)
         {
@@ -57,8 +56,6 @@ public class FoxController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rigid.velocity = Vector3.zero;
-        rigid.angularVelocity = Vector3.zero;
         // 공이 움직이고 있는 상태면 넘어감
         if (ballSelect)
         {
@@ -85,39 +82,3 @@ public class FoxController : MonoBehaviour
     }
 }
 
-
-
-
-//  // 터치가 없을 경우 넘어감
-//  if (Input.touchCount == 0)
-//  {
-//      if (!isTrace)
-//      {
-//          // 터치위치를 쫓아가는 중이 아니라면 카메라를 쳐다보도록 변경
-//          transform.rotation = Quaternion.LookRotation(cam.transform.position - transform.position);
-//      }
-//      return;
-//  }
-//  
-//  // 터치가 1개 이상 있을 경우
-//  if (Input.touchCount > 0 && raycastManager.Raycast(Input.GetTouch(0).position, hits, TrackableType.Planes))
-//  {
-//      if (!isTrace)
-//      {
-//          StartCoroutine(Trace());
-//      }
-//  
-//      // 이동하고자 하는 방향을 구하기
-//      Vector3 destination = Vector3.MoveTowards(transform.position, hits[0].pose.position, speed * Time.fixedDeltaTime);
-//      // rigidbody를 이용한 움직임
-//      // 터치한 거리와 가까워지면 이동 종료
-//      if (Vector3.Distance(hits[0].pose.position, transform.position) >= 0.2f)
-//      {
-//          rigid.MovePosition(destination);
-//      }
-//  
-//      if (hits[0].pose.position - transform.position != Vector3.zero)
-//      {
-//          transform.rotation = Quaternion.LookRotation((hits[0].pose.position - transform.position).normalized);
-//      }
-//  }

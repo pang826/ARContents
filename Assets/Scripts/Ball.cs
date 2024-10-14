@@ -3,6 +3,7 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     bool isSelected;
+    public bool isGround; // plane에 닿았는지 여부
     FoxController foxController;
     Rigidbody rigid;
     Vector2 pastPos;
@@ -10,6 +11,7 @@ public class Ball : MonoBehaviour
     private void Awake()
     {
         isSelected = false;
+        isGround = false;
         rigid = GetComponent<Rigidbody>();
     }
     private void Start()
@@ -19,13 +21,13 @@ public class Ball : MonoBehaviour
     }
     private void Update()
     {
-        if (transform.position.y < -20)
+        if (transform.position.y < -10)
         {
             Destroy(gameObject);
         }
-        Debug.Log(transform.position.y);
+
         // 화면을 터치했을 경우에만 반응
-        if (Input.touchCount > 0)
+        if (Input.touchCount > 0 && !isGround)
         {
             // 첫번째 터치
             Touch touch = Input.GetTouch(0);
@@ -98,6 +100,25 @@ public class Ball : MonoBehaviour
                     foxController.ballSelect = false;
                 }
             }
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.collider.tag == "plane")
+        {
+            isGround = true;
+            foxController.ballSelect = false;
+            rigid.velocity = Vector3.zero;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.collider.tag == "plane")
+        {
+            foxController.ballSelect = false;
+            isGround = false;
         }
     }
 }
